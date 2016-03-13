@@ -7,7 +7,6 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/go-web/httpctx"
 	"github.com/go-web/httpmux"
 )
 
@@ -35,7 +34,7 @@ func DefaultFormat(l *log.Logger) httpmux.Middleware {
 			b.WriteString(strconv.Itoa(rw.Bytes()))
 			b.Write([]byte(" bytes in "))
 			b.WriteString(time.Since(start).String())
-			if err := httpctx.Get(r).Value(ErrorID); err != nil {
+			if err := httpmux.Context(r).Value(ErrorID); err != nil {
 				fmt.Fprintf(b, " err: %v", err)
 			}
 			l.Print(b.String())

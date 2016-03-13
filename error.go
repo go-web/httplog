@@ -4,7 +4,8 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/go-web/httpctx"
+	"github.com/go-web/httpmux"
+
 	"golang.org/x/net/context"
 )
 
@@ -16,21 +17,21 @@ var ErrorID ErrorType
 
 // Error associates message v with the request context.
 func Error(r *http.Request, v ...interface{}) {
-	ctx := httpctx.Get(r)
+	ctx := httpmux.Context(r)
 	ctx = context.WithValue(ctx, ErrorID, fmt.Sprint(v...))
-	httpctx.Set(r, ctx)
+	httpmux.SetContext(ctx, r)
 }
 
 // Errorf associates message v with the request context.
 func Errorf(r *http.Request, format string, v ...interface{}) {
-	ctx := httpctx.Get(r)
+	ctx := httpmux.Context(r)
 	ctx = context.WithValue(ctx, ErrorID, fmt.Sprintf(format, v...))
-	httpctx.Set(r, ctx)
+	httpmux.SetContext(ctx, r)
 }
 
 // Errorln associates message v with the request context.
 func Errorln(r *http.Request, v ...interface{}) {
-	ctx := httpctx.Get(r)
+	ctx := httpmux.Context(r)
 	ctx = context.WithValue(ctx, ErrorID, fmt.Sprintln(v...))
-	httpctx.Set(r, ctx)
+	httpmux.SetContext(ctx, r)
 }
