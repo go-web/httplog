@@ -8,7 +8,7 @@ import (
 )
 
 func TestUseXForwardedFor(t *testing.T) {
-	want := "4.2.2.2"
+	want := "4.2.2.2:1905"
 	var have string
 	f := func(w http.ResponseWriter, r *http.Request) {
 		have = r.RemoteAddr
@@ -16,9 +16,9 @@ func TestUseXForwardedFor(t *testing.T) {
 	r := &http.Request{
 		Method:     "GET",
 		URL:        &url.URL{Path: "/"},
-		RemoteAddr: "::1",
+		RemoteAddr: "[::1]:1905",
 		Header: http.Header{
-			"X-Forwarded-For": {want},
+			"X-Forwarded-For": {"4.2.2.2"},
 		},
 	}
 	w := &httptest.ResponseRecorder{}

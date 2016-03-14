@@ -13,9 +13,12 @@ func UseXForwardedFor(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		ip := parseXFF(r.Header.Get("X-Forwarded-For"))
 		if ip != "" {
-			addr := r.RemoteAddr
-			r.RemoteAddr = ip
-			defer func() { r.RemoteAddr = addr }()
+			_, port, err := net.SplitHostPort(r.RemoteAddr)
+			if err == nil {
+				addr := r.RemoteAddr
+				r.RemoteAddr = net.JoinHostPort(ip, port)
+				defer func() { r.RemoteAddr = addr }()
+			}
 		}
 		next(w, r)
 	}
