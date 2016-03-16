@@ -45,7 +45,7 @@ func apacheCommonLog(w *ResponseWriter, r *http.Request, start time.Time) *bytes
 
 // ApacheCommonFormat returns a middleware that logs http requests
 // to the given logger using the Apache Common log format.
-func ApacheCommonFormat(l *log.Logger) httpmux.Middleware {
+func ApacheCommonFormat(l *log.Logger) httpmux.MiddlewareFunc {
 	return func(next http.HandlerFunc) http.HandlerFunc {
 		return func(w http.ResponseWriter, r *http.Request) {
 			start := time.Now()
@@ -60,7 +60,7 @@ func ApacheCommonFormat(l *log.Logger) httpmux.Middleware {
 
 // ApacheCombinedFormat returns a middleware that logs http requests
 // to the given logger using the Apache Combined log format.
-func ApacheCombinedFormat(l *log.Logger) httpmux.Middleware {
+func ApacheCombinedFormat(l *log.Logger) httpmux.MiddlewareFunc {
 	return func(next http.HandlerFunc) http.HandlerFunc {
 		return func(w http.ResponseWriter, r *http.Request) {
 			start := time.Now()

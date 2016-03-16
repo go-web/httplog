@@ -17,7 +17,7 @@ func TestDefaultFormat(t *testing.T) {
 	var b bytes.Buffer
 	l := log.New(&b, "", 0)
 	mux := httpmux.New()
-	mux.Use(DefaultFormat(l))
+	mux.UseFunc(DefaultFormat(l))
 	mux.GET("/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusNotFound)
 		io.WriteString(w, "foobar")

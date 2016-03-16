@@ -12,7 +12,7 @@ import (
 func ExampleLog() {
 	logger := log.New(os.Stdout, "[go-web] ", log.LstdFlags)
 	mux := httpmux.New()
-	mux.Use(httplog.DefaultFormat(logger))
+	mux.UseFunc(httplog.DefaultFormat(logger))
 	mux.GET("/", func(w http.ResponseWriter, r *http.Request) {
 		httplog.Errorf(r, "Todos são manos, eeei. Todos são hu-manos.")
 	})

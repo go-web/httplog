@@ -16,7 +16,7 @@ func TestApacheCommonFormat(t *testing.T) {
 	var b bytes.Buffer
 	l := log.New(&b, "", 0)
 	mux := httpmux.New()
-	mux.Use(ApacheCommonFormat(l))
+	mux.UseFunc(ApacheCommonFormat(l))
 	mux.GET("/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusNotFound)
 		io.WriteString(w, "foobar")
@@ -34,7 +34,7 @@ func TestApacheCombinedFormat(t *testing.T) {
 	var b bytes.Buffer
 	l := log.New(&b, "", 0)
 	mux := httpmux.New()
-	mux.Use(ApacheCommonFormat(l))
+	mux.UseFunc(ApacheCommonFormat(l))
 	mux.GET("/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusNotFound)
 		io.WriteString(w, "foobar")

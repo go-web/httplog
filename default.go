@@ -12,7 +12,7 @@ import (
 
 // DefaultFormat returns a middleware that logs http requests
 // to the given logger using the default log format.
-func DefaultFormat(l *log.Logger) httpmux.Middleware {
+func DefaultFormat(l *log.Logger) httpmux.MiddlewareFunc {
 	return func(next http.HandlerFunc) http.HandlerFunc {
 		return func(w http.ResponseWriter, r *http.Request) {
 			start := time.Now()
