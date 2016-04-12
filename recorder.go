@@ -1,6 +1,11 @@
 package httplog
 
-import "net/http"
+import (
+	"bufio"
+	"errors"
+	"net"
+	"net/http"
+)
 
 // The ResponseRecorder interface is implemented by ResponseWriters that
 // can record the response status code and bytes written to the client.
@@ -50,3 +55,29 @@ func (w *ResponseWriter) Code() int { return w.code }
 
 // Bytes implements the ResponseRecorder interface.
 func (w *ResponseWriter) Bytes() int { return w.bytes }
+
+// Hijack implements the http.Hijacker interface.
+func (w *ResponseWriter) Hijack() (net.Conn, *bufio.ReadWriter, error) {
+	f, ok := w.ResponseWriter.(http.Hijacker)
+	if !ok {
+		return nil, nil, errors.New("hijacker not supported")
+	}
+	return f.Hijack()
+}
+
+// Flush implements the http.Flusher interface.
+func (w *ResponseWriter) Flush() {
+	f, ok := w.ResponseWriter.(http.Flusher)
+	if ok {
+		f.Flush()
+	}
+}
+
+// CloseNotify implements the http.CloseNotififer interface.
+func (w *ResponseWriter) CloseNotify() <-chan bool {
+	f, ok := w.ResponseWriter.(http.CloseNotifier)
+	if ok {
+		return f.CloseNotify()
+	}
+	return make(chan bool) // ugh.
+}
